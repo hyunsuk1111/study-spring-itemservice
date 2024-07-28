@@ -6,10 +6,7 @@ import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,6 +17,7 @@ public class BasicItemController {
 
     private final ItemRepository itemRepository;
 
+    //상품 목록
     @GetMapping
     public String items(Model model){
         List<Item> items = itemRepository.findAll();
@@ -29,6 +27,7 @@ public class BasicItemController {
         return "basic/items";
     }
 
+    //상품 상세
     @GetMapping("/{itemId}")
     public String item(@PathVariable("itemId") long itemId, Model model) {
         Item item = itemRepository.findById(itemId);
@@ -45,10 +44,12 @@ public class BasicItemController {
     }
 
     @PostMapping("/add")
-    public String save(){
-        return "/basic/addFrom";
-    }
+    public String save(Item item, Model model){
+        itemRepository.save(item);
 
+        return "/basic/item";
+    }
+    
     //테스트용
     @PostConstruct
     public void init() {
