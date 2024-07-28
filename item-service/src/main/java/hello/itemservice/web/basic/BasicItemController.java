@@ -8,12 +8,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
 @Controller
-@RequestMapping(value = "/basic/items")
+@RequestMapping("/basic/items")
 @RequiredArgsConstructor
 public class BasicItemController {
 
@@ -37,9 +38,21 @@ public class BasicItemController {
         return "basic/item";
     }
 
+    //동일한 URL이지만 Http메소드로 구분
+    @GetMapping("/add")
+    public String add(){
+        return "basic/addForm";
+    }
+
+    @PostMapping("/add")
+    public String save(){
+        return "/basic/addFrom";
+    }
+
     //테스트용
     @PostConstruct
     public void init() {
+
         itemRepository.save(new Item("itemA", 10000, 10));
         itemRepository.save(new Item("itemB", 20000, 20));
 
