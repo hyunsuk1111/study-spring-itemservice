@@ -38,6 +38,7 @@ public class BasicItemController {
     }
 
     //동일한 URL이지만 Http메소드로 구분
+    //상품 등록
     @GetMapping("/add")
     public String add(){
         return "basic/addForm";
@@ -47,8 +48,26 @@ public class BasicItemController {
     public String save(Item item, Model model){
         itemRepository.save(item);
 
-        return "/basic/item";
+        return "basic/item";
     }
+
+    //상품 수정
+    @GetMapping("/{itemId}/edit")
+    public String edit(@PathVariable Long itemId, Model model){
+        Item item = itemRepository.findById(itemId);
+
+        model.addAttribute("item", item);
+
+        return "basic/editForm";
+    }
+
+    @PostMapping("/{itemId}/edit")
+    public String edit(@PathVariable long itemId, @ModelAttribute Item item, Model model){
+        itemRepository.update(itemId, item);
+
+        return "redirect:/basic/items/{itemId}";
+    }
+
     
     //테스트용
     @PostConstruct
