@@ -44,11 +44,13 @@ public class BasicItemController {
         return "basic/addForm";
     }
 
+    //새로고침 시 마지막에 전송한 데이터를 재전송 >> 중복 저장 발생[Post Redirect Get]
+    //상세화면으로 redirect 해주기
     @PostMapping("/add")
-    public String save(Item item, Model model){
+    public String save(@ModelAttribute Item item, Model model){
         itemRepository.save(item);
 
-        return "basic/item";
+        return "redirect:/basic/items/" + item.getId();
     }
 
     //상품 수정
