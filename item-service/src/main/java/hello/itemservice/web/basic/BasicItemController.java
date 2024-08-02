@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -47,10 +48,13 @@ public class BasicItemController {
     //새로고침 시 마지막에 전송한 데이터를 재전송 >> 중복 저장 발생[Post Redirect Get]
     //상세화면으로 redirect 해주기
     @PostMapping("/add")
-    public String save(@ModelAttribute Item item, Model model){
-        itemRepository.save(item);
+    public String save(@ModelAttribute Item item, RedirectAttributes redirectAttributes){
+        Item savedItem = itemRepository.save(item);
 
-        return "redirect:/basic/items/" + item.getId();
+        redirectAttributes.addAttribute("itemId", savedItem.getId());
+        redirectAttributes.addAttribute("status", true);
+
+        return "redirect:/basic/items/{itemId}";
     }
 
     //상품 수정
